@@ -47,7 +47,6 @@
                             <label asp-for="NewSaving.Note" class="control-label">備註</label>
                             <input asp-for="NewSaving.Note" class="form-control" />
                         </div>                        <input type="hidden" asp-for="NewSaving.SaveDate" value="@DateTime.Today" />
-                        <input type="hidden" asp-for="NewSaving.IsRandom" value="false" />
                         <input type="hidden" asp-for="NewSaving.UserId" value="@User.FindFirstValue(ClaimTypes.NameIdentifier)" />
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">存錢</button>
@@ -83,11 +82,11 @@
                     <div class="progress" style="height: 30px;">
                         <div class="progress-bar progress-bar-striped progress-bar-animated" 
                              role="progressbar" 
-                             style="width: @Model.ProgressPercentage%;" 
-                             aria-valuenow="@Model.ProgressPercentage" 
+                             style="width: @((double)Model.TotalSavings / 66795 * 100)%;" 
+                             aria-valuenow="@((double)Model.TotalSavings / 66795 * 100)" 
                              aria-valuemin="0" 
                              aria-valuemax="100">
-                            @Model.TotalDays / 365 天 (@Math.Round(Model.ProgressPercentage, 1)%)
+                            @Math.Round((double)Model.TotalSavings / 66795 * 100, 1)%
                         </div>
                     </div>
                     <div class="text-center mt-3">

@@ -21,9 +21,6 @@ namespace MoneyDiary365.Models
         [Display(Name = "備註")]
         public string? Note { get; set; }
         
-        [Display(Name = "是否為隨機金額")]
-        public bool IsRandom { get; set; }
-        
         // 添加用戶關聯
         [Required]
         public string UserId { get; set; }

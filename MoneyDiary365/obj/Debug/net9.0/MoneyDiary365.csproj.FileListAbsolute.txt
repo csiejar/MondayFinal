@@ -264,6 +264,7 @@
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/MoneyDiary365.MvcApplicationPartsAssemblyInfo.cache
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/MoneyDiary365.RazorAssemblyInfo.cache
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/MoneyDiary365.RazorAssemblyInfo.cs
+/Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/MoneyDiary365.sourcelink.json
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/scopedcss/Views/Shared/_Layout.cshtml.rz.scp.css
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/scopedcss/bundle/MoneyDiary365.styles.css
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/scopedcss/projectbundle/MoneyDiary365.bundle.scp.css
@@ -403,4 +404,3 @@
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/MoneyDiary365.pdb
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/MoneyDiary365.genruntimeconfig.cache
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/ref/MoneyDiary365.dll
-/Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/MoneyDiary365.sourcelink.json

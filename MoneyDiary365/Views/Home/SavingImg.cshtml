@@ -19,7 +19,7 @@
     <div class="row mb-3">
         <div class="col">
             <div class="alert alert-info">
-                <strong>已完成：</strong> @Model.Count() / 365 個金額
+                <strong>已完成：</strong> @Model.Count() / 365 天
                 <strong>進度：</strong> @Math.Round(Model.Count() / 365.0 * 100, 1)%
             </div>
         </div>
@@ -76,13 +76,13 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="text-center">
-                                <h5>已完成金額</h5>
+                                <h5>已完成天數</h5>
                                 <h2 class="text-success">@Model.Count()</h2>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="text-center">
-                                <h5>剩餘金額</h5>
+                                <h5>剩餘天數</h5>
                                 <h2 class="text-warning">@(365 - Model.Count())</h2>
                             </div>
                         </div>

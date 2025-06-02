@@ -27,9 +27,7 @@ public class HomeController : Controller
         _logger = logger;
         _context = context;
         _userManager = userManager;
-    }
-
-    public async Task<IActionResult> Index()
+    }    public async Task<IActionResult> Index()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
           var viewModel = new DashboardViewModel
@@ -45,9 +43,9 @@ public class HomeController : Controller
                 
             ProgressPercentage = await _context.SavingRecords
                 .Where(s => s.UserId == userId)
-                .CountAsync() / 365.0 * 100,
+                .SumAsync(s => s.Amount) / 66795.0 * 100,
                 
-            NewSaving = new SavingRecord 
+            NewSaving = new SavingRecord
             { 
                 SaveDate = DateTime.Today,
                 UserId = userId,
@@ -89,12 +87,8 @@ public class HomeController : Controller
             Amount = model.NewSaving.Amount,
             Note = model.NewSaving.Note ?? "",
             SaveDate = DateTime.Today,
-            IsRandom = model.NewSaving.IsRandom,
             UserId = userId
         };
-        
-        // 顯示接收到的金額用於調試
-        TempData["DebugInfo"] = $"接收到的金額: {savingRecord.Amount}, 類型: {savingRecord.Amount.GetType().Name}";
         
         // 檢查金額是否在有效範圍內
         if (savingRecord.Amount <= 0 || savingRecord.Amount > 365)
@@ -218,8 +212,7 @@ public class HomeController : Controller
             { 
                 SaveDate = DateTime.Today,
                 Amount = randomAmount,
-                Note = "隨機存款",
-                IsRandom = true
+                Note = "隨機存款"
             },
             
             RecentSavings = await _context.SavingRecords
