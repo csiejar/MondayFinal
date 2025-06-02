@@ -1,0 +1,48 @@
+@model IEnumerable<MoneyDiary365.Models.SavingRecord>
+@{
+    ViewData["Title"] = "存款歷史";
+}
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <h1>存款歷史</h1>
+            <p>
+                <a asp-action="Index" class="btn btn-primary">回到首頁</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h3>所有存款記錄</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.SaveDate)</th>
+                                <th>@Html.DisplayNameFor(model => model.Amount)</th>
+                                <th>@Html.DisplayNameFor(model => model.Note)</th>
+                                <th>@Html.DisplayNameFor(model => model.IsRandom)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.SaveDate)</td>
+                                    <td>$@Html.DisplayFor(modelItem => item.Amount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Note)</td>
+                                    <td>@(item.IsRandom ? "是" : "否")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

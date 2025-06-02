@@ -1,0 +1,54 @@
+@{
+    ViewData["Title"] = "歡迎使用 365 存錢日記";
+}
+
+<div class="container">
+    <div class="row mb-5">
+        <div class="col text-center">
+            <h1 class="display-3">365 存錢日記</h1>
+            <p class="lead">每天存一點，一年後就是一筆可觀的積蓄</p>
+        </div>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow">
+                <div class="card-body text-center p-5">
+                    <h2 class="mb-4">開始您的存錢之旅</h2>
+                    <p>記錄每天的存款，觀察您的進度，達成您的存錢目標。</p>
+                    <div class="mt-4">
+                        <a class="btn btn-primary btn-lg me-2" asp-area="Identity" asp-page="/Account/Register">註冊帳號</a>
+                        <a class="btn btn-outline-primary btn-lg" asp-area="Identity" asp-page="/Account/Login">登入</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">每日存款</h3>
+                    <p class="card-text">記錄每天的存款金額，金額範圍為 1 到 365 元，每個金額只能使用一次。</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">隨機存款</h3>
+                    <p class="card-text">不確定要存多少錢？讓系統為您挑選一個尚未使用過的金額。</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3 class="card-title">進度追蹤</h3>
+                    <p class="card-text">查看您已經完成了多少天的存款計劃，及時了解存款進度。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
