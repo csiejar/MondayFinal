@@ -403,3 +403,4 @@
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/MoneyDiary365.pdb
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/MoneyDiary365.genruntimeconfig.cache
 /Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/ref/MoneyDiary365.dll
+/Users/jerry950511/Desktop/MondayFinal/MoneyDiary365/obj/Debug/net9.0/MoneyDiary365.sourcelink.json

@@ -1,15 +1,27 @@
 @model IEnumerable<MoneyDiary365.Models.SavingRecord>
 @{
     ViewData["Title"] = "存款紀錄表";
+    var recordsByAmount = Model.ToDictionary(r => r.Amount, r => r);
 }
 
 <div class="container">
     <div class="row mb-4">
         <div class="col">
             <h1>存款紀錄表</h1>
+            <p class="text-muted">顯示每個金額（1-365元）分別是在哪一天被存入的</p>
             <p>
                 <a asp-action="Index" class="btn btn-primary">回到首頁</a>
+                <a asp-action="History" class="btn btn-secondary">存款歷史</a>
             </p>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col">
+            <div class="alert alert-info">
+                <strong>已完成：</strong> @Model.Count() / 365 個金額
+                <strong>進度：</strong> @Math.Round(Model.Count() / 365.0 * 100, 1)%
+            </div>
         </div>
     </div>
 
@@ -17,21 +29,33 @@
         <div class="col">
             <div class="card">
                 <div class="card-header bg-success text-white">
-                    <h3>視覺化存款記錄</h3>
+                    <h3>365 存錢挑戰紀錄表</h3>
+                    <small>綠色：已完成 | 灰色：未完成</small>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        @for (int i = 1; i <= 365; i++)
+                    <div class="row g-1">
+                        @for (int amount = 1; amount <= 365; amount++)
                         {
-                            var record = Model.FirstOrDefault(r => r.SaveDate.DayOfYear == i);
-                            var colorClass = record != null ? "bg-success" : "bg-light";
-                            var amount = record != null ? $"${record.Amount}" : "";
+                            var record = recordsByAmount.ContainsKey(amount) ? recordsByAmount[amount] : null;
+                            var isCompleted = record != null;
+                            var colorClass = isCompleted ? "bg-success text-white" : "bg-light text-dark border";
+                            var dateText = isCompleted ? record.SaveDate.ToString("MM/dd") : "";
                             
-                            <div class="col-2 col-md-1 mb-2">
-                                <div class="card @colorClass text-center" style="height: 60px;">
-                                    <div class="card-body p-1">
-                                        <small>@i</small>
-                                        <div style="font-size: 0.7rem;">@amount</div>
+                            <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 mb-1">
+                                <div class="card @colorClass text-center" 
+                                     style="height: 70px; cursor: pointer; font-size: 0.8rem;" 
+                                     data-bs-toggle="tooltip"
+                                     data-bs-title="@(isCompleted ? $"金額: {amount} 元 | 存入日期: {record.SaveDate:yyyy-MM-dd} | 備註: {record.Note}" : $"金額: {amount} 元 | 尚未存入")">
+                                    <div class="card-body p-1 d-flex flex-column justify-content-center">
+                                        <div style="font-weight: bold;">$@amount</div>
+                                        @if (isCompleted)
+                                        {
+                                            <div style="font-size: 0.7rem;">@dateText</div>
+                                        }
+                                        else
+                                        {
+                                            <div style="font-size: 0.7rem; color: #6c757d;">未存</div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -41,4 +65,52 @@
             </div>
         </div>
     </div>
+
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4>統計資訊</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <h5>已完成金額</h5>
+                                <h2 class="text-success">@Model.Count()</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <h5>剩餘金額</h5>
+                                <h2 class="text-warning">@(365 - Model.Count())</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <h5>總存款</h5>
+                                <h2 class="text-primary">$@Model.Sum(r => r.Amount)</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="text-center">
+                                <h5>完成度</h5>
+                                <h2 class="text-info">@Math.Round(Model.Count() / 365.0 * 100, 1)%</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        // 啟用 Bootstrap tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}
