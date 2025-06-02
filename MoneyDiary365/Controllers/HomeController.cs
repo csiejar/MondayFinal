@@ -30,9 +30,16 @@ public class HomeController : Controller
     }    public async Task<IActionResult> Index()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-          var viewModel = new DashboardViewModel
+        
+        if (string.IsNullOrEmpty(userId))
         {
-            CurrentUserId = userId ?? string.Empty,
+            TempData["ErrorMessage"] = "請先登入";
+            return RedirectToAction("Index", "Welcome");
+        }
+        
+        var viewModel = new DashboardViewModel
+        {
+            CurrentUserId = userId,
             TotalSavings = await _context.SavingRecords
                 .Where(s => s.UserId == userId)
                 .SumAsync(s => s.Amount),
@@ -60,7 +67,7 @@ public class HomeController : Controller
         };
 
         return View(viewModel);
-    }    [HttpPost]
+    }[HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddSaving(DashboardViewModel model)
     {
@@ -137,11 +144,10 @@ public class HomeController : Controller
             if (ex.InnerException != null)
             {
                 TempData["DebugInfo"] += $" | 內部錯誤: {ex.InnerException.Message}";
-            }
-              // 如果發生錯誤，重新載入首頁資料
+            }              // 如果發生錯誤，重新載入首頁資料
             var viewModel = new DashboardViewModel
             {
-                CurrentUserId = userId ?? string.Empty,
+                CurrentUserId = userId,
                 TotalSavings = await _context.SavingRecords
                     .Where(s => s.UserId == userId)
                     .SumAsync(s => s.Amount),
@@ -164,14 +170,19 @@ public class HomeController : Controller
             };
             return View("Index", viewModel);
         }
-    }
-
-    [HttpPost]
+    }    [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RandomSaving()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-          // 查找用戶已經使用過的金額
+        
+        if (string.IsNullOrEmpty(userId))
+        {
+            TempData["ErrorMessage"] = "請先登入";
+            return RedirectToAction(nameof(Index));
+        }
+        
+        // 查找用戶已經使用過的金額
         var existingAmounts = await _context.SavingRecords
             .Where(s => s.UserId == userId)
             .Select(s => s.Amount)
@@ -195,7 +206,7 @@ public class HomeController : Controller
           // 重新載入首頁資料，但將隨機金額放入輸入框中
         var viewModel = new DashboardViewModel
         {
-            CurrentUserId = userId ?? string.Empty,
+            CurrentUserId = userId,
             TotalSavings = await _context.SavingRecords
                 .Where(s => s.UserId == userId)
                 .SumAsync(s => s.Amount),
@@ -224,10 +235,15 @@ public class HomeController : Controller
           TempData["SuccessMessage"] = $"已生成隨機金額：{randomAmount}，請按「存錢」按鈕確認";
         return View("Index", viewModel);
     }
-    
-    public async Task<IActionResult> History()
+      public async Task<IActionResult> History()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        if (string.IsNullOrEmpty(userId))
+        {
+            TempData["ErrorMessage"] = "請先登入";
+            return RedirectToAction("Index", "Welcome");
+        }
         
         var records = await _context.SavingRecords
             .Where(s => s.UserId == userId)
@@ -241,12 +257,64 @@ public class HomeController : Controller
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         
+        if (string.IsNullOrEmpty(userId))
+        {
+            TempData["ErrorMessage"] = "請先登入";
+            return RedirectToAction("Index", "Welcome");
+        }
+        
         var records = await _context.SavingRecords
             .Where(s => s.UserId == userId)
             .OrderBy(s => s.SaveDate)
             .ToListAsync();
             
         return View(records);
+    }    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteSaving(int id, string? returnUrl = null)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        if (string.IsNullOrEmpty(userId))
+        {
+            TempData["ErrorMessage"] = "請先登入";
+            return RedirectToAction("Index", "Welcome");
+        }
+        
+        var savingRecord = await _context.SavingRecords
+            .FirstOrDefaultAsync(s => s.Id == id && s.UserId == userId);
+            
+        if (savingRecord == null)
+        {
+            TempData["ErrorMessage"] = "找不到要刪除的記錄，或您沒有權限刪除此記錄";
+            return RedirectToAction(returnUrl ?? nameof(Index));
+        }
+        
+        try
+        {
+            _context.SavingRecords.Remove(savingRecord);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = $"已成功刪除金額 {savingRecord.Amount} 元的記錄";
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "刪除存款記錄時發生錯誤");
+            TempData["ErrorMessage"] = "刪除記錄時發生錯誤，請稍後再試";
+        }
+          // 根據 returnUrl 決定重導向位置
+        if (!string.IsNullOrEmpty(returnUrl))
+        {
+            if (returnUrl.Equals("History", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction(nameof(History));
+            }
+            else if (returnUrl.Equals("SavingImg", StringComparison.OrdinalIgnoreCase))
+            {
+                return RedirectToAction(nameof(SavingImg));
+            }
+        }
+        
+        return RedirectToAction(nameof(Index));
     }
     
     [AllowAnonymous]

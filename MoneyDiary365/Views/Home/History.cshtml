@@ -7,6 +7,20 @@
     <div class="row mb-4">
         <div class="col">
             <h1>存款歷史</h1>
+            
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger mt-2">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success mt-2">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            
             <p>
                 <a asp-action="Index" class="btn btn-primary">回到首頁</a>
             </p>
@@ -26,6 +40,7 @@
                                 <th>@Html.DisplayNameFor(model => model.SaveDate)</th>
                                 <th>@Html.DisplayNameFor(model => model.Amount)</th>
                                 <th>@Html.DisplayNameFor(model => model.Note)</th>
+                                <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,6 +50,16 @@
                                     <td>@Html.DisplayFor(modelItem => item.SaveDate)</td>
                                     <td>$@Html.DisplayFor(modelItem => item.Amount)</td>
                                     <td>@Html.DisplayFor(modelItem => item.Note)</td>
+                                    <td>
+                                        <form asp-action="DeleteSaving" method="post" style="display: inline;">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <input type="hidden" name="returnUrl" value="History" />
+                                            <button type="submit" class="btn btn-danger btn-sm" 
+                                                    onclick="return confirm('確定要刪除這筆 $@item.Amount 元的存款記錄嗎？')">
+                                                刪除
+                                            </button>
+                                        </form>
+                                    </td>
                                 </tr>
                             }
                         </tbody>
