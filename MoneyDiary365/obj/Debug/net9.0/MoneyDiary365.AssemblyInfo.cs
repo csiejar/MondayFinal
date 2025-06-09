@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MoneyDiary365")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e777e10c111998ef05eb1aa16f19d761fe6a638a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+be50f7131b0bb940f47796d2c85bca829de37c00")]
 [assembly: System.Reflection.AssemblyProductAttribute("MoneyDiary365")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MoneyDiary365")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
